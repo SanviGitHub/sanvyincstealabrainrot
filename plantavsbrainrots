@@ -1,0 +1,142 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+if playerGui:FindFirstChild("SanvyHub") then
+    playerGui.SanvyHub:Destroy()
+end
+
+-- Blur fondo
+local blurEffect = Instance.new("BlurEffect")
+blurEffect.Size = 15
+blurEffect.Parent = game.Lighting
+
+-- GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "SanvyHub"
+screenGui.Parent = playerGui
+
+-- Frame principal
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 420, 0, 260)
+mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = mainFrame
+
+-- Header
+local header = Instance.new("Frame")
+header.Size = UDim2.new(1, 0, 0, 45)
+header.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+header.BorderSizePixel = 0
+header.Parent = mainFrame
+
+local headerCorner = Instance.new("UICorner")
+headerCorner.CornerRadius = UDim.new(0, 12)
+headerCorner.Parent = header
+
+-- Título
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -50, 1, 0)
+title.Position = UDim2.new(0, 15, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "Sanvy Hub Inc."
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = header
+
+-- Botón cerrar
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 35, 0, 35)
+closeButton.Position = UDim2.new(1, -40, 0.5, 0)
+closeButton.AnchorPoint = Vector2.new(0.5, 0.5)
+closeButton.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
+closeButton.Text = "X"
+closeButton.TextSize = 20
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.Parent = header
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(1, 0)
+closeCorner.Parent = closeButton
+
+-- Contenedor de botones
+local contentFrame = Instance.new("Frame")
+contentFrame.Size = UDim2.new(1, -40, 1, -70)
+contentFrame.Position = UDim2.new(0, 20, 0, 60)
+contentFrame.BackgroundTransparency = 1
+contentFrame.Parent = mainFrame
+
+local buttonLayout = Instance.new("UIListLayout")
+buttonLayout.Parent = contentFrame
+buttonLayout.FillDirection = Enum.FillDirection.Vertical
+buttonLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+buttonLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+buttonLayout.Padding = UDim.new(0, 15)
+
+-- Función para botones
+local function createButton(text, color, url)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.BackgroundColor3 = color
+    button.Text = text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.GothamBold
+    button.TextSize = 16
+
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.CornerRadius = UDim.new(0, 10)
+    btnCorner.Parent = button
+
+    button.MouseButton1Click:Connect(function()
+        loadstring(game:HttpGet(url))()
+    end)
+
+    return button
+end
+
+-- Botones
+local toraBtn = createButton("🌱 Tora Is me", Color3.fromRGB(0, 170, 255),
+    "https://raw.githubusercontent.com/gumanba/Scripts/main/PlantsVsBrainrots")
+toraBtn.Parent = contentFrame
+
+local pollutedBtn = createButton("☣ Polluted Premium", Color3.fromRGB(220, 60, 60),
+    "https://pastefy.app/Vn9St10L/raw")
+pollutedBtn.Parent = contentFrame
+
+local hendarBtn = createButton("⚡ Hendar Hub", Color3.fromRGB(255, 180, 0),
+    "https://pastefy.app/0qeqiqZO/raw")
+hendarBtn.Parent = contentFrame
+
+-- Animación cerrar
+closeButton.MouseButton1Click:Connect(function()
+    -- Primero encoge los botones
+    for _, btn in ipairs(contentFrame:GetChildren()) do
+        if btn:IsA("TextButton") then
+            TweenService:Create(btn, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                Size = UDim2.new(0, 0, 0, 0)
+            }):Play()
+        end
+    end
+
+    wait(0.12) -- esperar a que se oculten los botones
+
+    -- Luego encoge el frame
+    TweenService:Create(mainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0.5, 0, 0.5, 0)
+    }):Play()
+
+    wait(0.25)
+    blurEffect:Destroy()
+    screenGui:Destroy()
+end)
