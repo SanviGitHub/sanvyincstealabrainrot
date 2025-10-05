@@ -7,17 +7,14 @@ if playerGui:FindFirstChild("SanvyHub") then
     playerGui.SanvyHub:Destroy()
 end
 
--- Blur fondo
 local blurEffect = Instance.new("BlurEffect")
 blurEffect.Size = 15
 blurEffect.Parent = game.Lighting
 
--- GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "SanvyHub"
 screenGui.Parent = playerGui
 
--- Frame principal
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 420, 0, 260)
 mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -30,7 +27,6 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 12)
 corner.Parent = mainFrame
 
--- Header
 local header = Instance.new("Frame")
 header.Size = UDim2.new(1, 0, 0, 45)
 header.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
@@ -41,7 +37,6 @@ local headerCorner = Instance.new("UICorner")
 headerCorner.CornerRadius = UDim.new(0, 12)
 headerCorner.Parent = header
 
--- Título
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -50, 1, 0)
 title.Position = UDim2.new(0, 15, 0, 0)
@@ -53,7 +48,6 @@ title.TextSize = 20
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = header
 
--- Botón cerrar
 local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 35, 0, 35)
 closeButton.Position = UDim2.new(1, -40, 0.5, 0)
@@ -69,7 +63,6 @@ local closeCorner = Instance.new("UICorner")
 closeCorner.CornerRadius = UDim.new(1, 0)
 closeCorner.Parent = closeButton
 
--- Contenedor de botones
 local contentFrame = Instance.new("Frame")
 contentFrame.Size = UDim2.new(1, -40, 1, -70)
 contentFrame.Position = UDim2.new(0, 20, 0, 60)
@@ -83,7 +76,6 @@ buttonLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 buttonLayout.VerticalAlignment = Enum.VerticalAlignment.Top
 buttonLayout.Padding = UDim.new(0, 15)
 
--- Función para botones
 local function createButton(text, color, url)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(0, 200, 0, 50)
@@ -104,7 +96,6 @@ local function createButton(text, color, url)
     return button
 end
 
--- Botones
 local toraBtn = createButton("🌱 Tora Is me", Color3.fromRGB(0, 170, 255),
     "https://raw.githubusercontent.com/gumanba/Scripts/main/PlantsVsBrainrots")
 toraBtn.Parent = contentFrame
@@ -117,9 +108,7 @@ local hendarBtn = createButton("⚡ Hendar Hub", Color3.fromRGB(255, 180, 0),
     "https://pastefy.app/0qeqiqZO/raw")
 hendarBtn.Parent = contentFrame
 
--- Animación cerrar
 closeButton.MouseButton1Click:Connect(function()
-    -- Primero encoge los botones
     for _, btn in ipairs(contentFrame:GetChildren()) do
         if btn:IsA("TextButton") then
             TweenService:Create(btn, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
@@ -128,9 +117,8 @@ closeButton.MouseButton1Click:Connect(function()
         end
     end
 
-    wait(0.12) -- esperar a que se oculten los botones
+    wait(0.12) 
 
-    -- Luego encoge el frame
     TweenService:Create(mainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
         Size = UDim2.new(0, 0, 0, 0),
         Position = UDim2.new(0.5, 0, 0.5, 0)
